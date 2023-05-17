@@ -1,0 +1,74 @@
+// バージョン定義
+syntax = "proto3";
+
+// パッケージ定義
+package sample;
+
+// import
+import "timestamp.proto";
+import "duration.proto";
+
+// サービスとRPCメソッド定義
+service SampleService {
+    rpc Sample (SampleRequest) returns (SampleResponse);
+
+    // サーバーストリーミングRPC
+    rpc SampleServerStreamMethod (SampleRequest) returns (stream SampleResponse);
+
+    // クライアントストリーミングRPC
+  rpc SampleClientStreamMethod (stream SampleRequest) returns (SampleResponse);
+
+    // 双方向ストリーミングRPC
+  rpc SampleBidirectionalMethod (stream SampleRequest) returns (stream SampleResponse);
+}
+
+message SampleRequest {
+    string name = 1;
+}
+
+message SampleResponse {
+    Sample sample = 1;
+}
+
+
+// メッセージ型
+// 右の数字は「タグナンバー」
+message Sample {
+    // スカラー型
+    // 数値、文字列、真偽値、バイト配列がある
+    int32 id = 1;
+    string name = 2;
+    bool isBool = 3;
+
+    // deprecated 廃止予定かつ非推奨であるフィールドを明示する
+  string duplicated_field = 4 [deprecated = true];
+
+    // reserved識別子 廃盤にしたタグナンバー
+    reserved 7, 8, 10 to 12;
+
+    // リスト（配列）
+    // 多次元配列は定義できない
+    // repeated SampleList sample_list = 5;
+
+    // マップ（連想配列）
+    map<string, string> sample_map = 6;
+
+    // 複数の中からどれかひとつ
+    // oneof message {
+    //     string one = 1;
+    //     string other = 2;
+    // }
+
+    // Well Known Types
+    google.protobuf.Duration sample_duration = 9;
+    google.protobuf.Timestamp create_time = 13;
+
+    // 列挙型
+    enum SampleEnum {
+        UNKNOWN = 0;
+        TEST1 = 1;
+        TEST2 = 2;
+        TEST3 = 3;
+    }
+
+}

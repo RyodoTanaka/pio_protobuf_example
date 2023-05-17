@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package sensor;
+
+import "timestamp.proto";
+
+message Vector3d {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+
+message IMU {
+  google.protobuf.Timestamp time = 1;
+  Vector3d acceleration = 2;
+  Vector3d angular_velocity = 3;
+  Vector3d magnetic = 4;
+}
